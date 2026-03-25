@@ -1,0 +1,298 @@
+:root {
+    --pearl-blue: #224D9A;
+    --pearl-green: #027A48;
+    --text-soft: rgba(255, 255, 255, 0.75); 
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #3A6FCF 0%, var(--pearl-blue) 40%, var(--pearl-green) 80%, #0BA865 100%);
+    font-family: 'Inter', sans-serif;
+    color: white;
+    overflow: hidden;
+}
+
+/* Woven Fabric Texture */
+.fabric-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        linear-gradient(45deg, rgba(255,255,255,0.06) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.06) 75%, rgba(255,255,255,0.06)),
+        linear-gradient(45deg, rgba(255,255,255,0.06) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.06) 75%, rgba(255,255,255,0.06));
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    z-index: -3;
+}
+
+/* Flowing Waves Animation */
+.wave-container {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%; height: 50vh;
+    z-index: -2;
+}
+.waves {
+    width: 100%; height: 100%;
+    min-height: 150px; max-height: 350px;
+    position: absolute; bottom: 0;
+}
+.parallax > use {
+    animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+.parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+.parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+.parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+.parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+
+@keyframes move-forever {
+    0% { transform: translate3d(-90px,0,0); }
+    100% { transform: translate3d(85px,0,0); }
+}
+
+/* Main Layout Positioning */
+.main-layout {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    padding: 20px 40px;
+}
+
+/* --- INCREASED GAP BETWEEN CONTAINERS --- */
+.panels-container {
+    display: grid;
+    grid-template-columns: 0.75fr 1.25fr;
+    gap: 90px; /* Greatly increased the gap to add breathing space */
+    width: 100%;
+    max-width: 1300px;
+    align-items: center;
+}
+
+/* --- LEFT PANEL --- */
+.left-panels {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* REVERTED TO LIGHT FROSTED GLASS */
+.info-card {
+    background: rgba(255, 255, 255, 0.08); 
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px; 
+    padding: 15px 18px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    height: 450px; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- REVERSE WIPE CONTINUOUS FLOW ANIMATION --- */
+.news-scroll-container {
+    position: relative;
+    flex-grow: 1;
+    overflow: hidden; 
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.news-list.continuous-flow {
+    position: absolute;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Adds space between the list blocks */
+    
+    /* SLOWED DOWN ANIMATION (From 25s to 45s) */
+    animation: flowReverseWipe 45s linear infinite;
+}
+
+.news-list.continuous-flow:hover {
+    animation-play-state: paused;
+}
+
+@keyframes flowReverseWipe {
+    0% { transform: translateY(400px); } 
+    100% { transform: translateY(-120%); } 
+}
+
+/* --- STRUCTURED HEADINGS & CONTENT BLOCKS --- */
+.news-list li {
+    background: rgba(255, 255, 255, 0.05); 
+    padding: 15px 18px; /* Extra padding for blocks */
+    border-radius: 8px;
+    border-left: 3px solid rgba(255, 255, 255, 0.4); 
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Space between heading and description */
+}
+
+.info-heading {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.info-desc {
+    font-size: 0.85rem; 
+    line-height: 1.5;
+    color: rgba(255,255,255,0.85);
+}
+
+/* --- ENLARGED, PRIMARY RIGHT SIDE GLASS BOX (REVERTED SHADE) --- */
+.glass-box {
+    background: rgba(255, 255, 255, 0.10); /* Reverted back to light glass */
+    backdrop-filter: blur(25px);
+    border-radius: 25px; 
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    padding: 45px 55px; 
+    min-height: 640px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+}
+
+.form-box {
+    max-width: 600px; 
+    margin-left: 20px; 
+    margin-right: auto; 
+    width: 100%;
+}
+
+/* --- RECTANGLE LOGO BACKGROUND WITH WAVE ANIMATION --- */
+.form-logo-container {
+    width: 100%; 
+    max-width: 320px; 
+    height: 90px; 
+    margin: 0 auto 40px auto; 
+    background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.02) 100%);
+    background-size: 200% 100%;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    
+    animation: ribbonWave 4s ease-in-out infinite;
+}
+
+@keyframes ribbonWave {
+    0% {
+        background-position: 100% 0;
+        transform: translateY(0);
+    }
+    50% {
+        background-position: 0 0;
+        transform: translateY(-4px); 
+    }
+    100% {
+        background-position: 100% 0;
+        transform: translateY(0);
+    }
+}
+
+.hd-logo { 
+    width: 90%; 
+    height: auto; 
+    max-height: 60px;
+    object-fit: contain; 
+    display: block; 
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1)); 
+}
+
+/* --- LARGER FORM ELEMENTS --- */
+.input-group { 
+    margin-bottom: 35px; 
+} 
+.input-group label { 
+    display: block; 
+    font-size: 0.9rem; 
+    color: var(--text-soft); 
+    margin-bottom: 8px; 
+    font-weight: 500;
+}
+.input-group input {
+    width: 100%; 
+    padding: 16px 18px; 
+    background: rgba(255,255,255,0.1); /* Reverted to lighter fields */
+    border: 1px solid rgba(255,255,255,0.3); 
+    border-radius: 12px;
+    color: white; 
+    font-size: 1.05rem; 
+    transition: 0.3s;
+}
+.input-group input::placeholder { color: rgba(255,255,255,0.5); }
+.input-group input:focus { border-color: #fff; outline: none; background: rgba(255,255,255,0.2); }
+
+/* --- LOGIN BUTTON AREA --- */
+.login-footer { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 15px; 
+    margin-top: 30px; 
+}
+
+.submit-btn {
+    width: 100%; 
+    background: var(--pearl-green); 
+    color: white; 
+    border: none;
+    padding: 15px 35px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    font-size: 1.1rem; 
+    cursor: pointer; 
+    box-shadow: 0 4px 15px rgba(2, 122, 72, 0.35);
+    transition: transform 0.2s, background 0.2s;
+}
+.submit-btn:hover { transform: translateY(-2px); background: #038c53;}
+
+.forgot { color: var(--text-soft); font-size: 0.9rem; text-decoration: none; }
+.forgot:hover { text-decoration: underline; color: #fff;}
+
+/* --- HELPDESK BUTTONS --- */
+.bottom-nav { 
+    margin-top: auto; 
+    padding-top: 40px; 
+    width: 100%; 
+    display: flex; 
+    gap: 20px; 
+    justify-content: space-between; 
+}
+
+.glass-btn {
+    flex: 1; 
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03); 
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    color: rgba(255, 255, 255, 0.9); 
+    padding: 14px 15px; 
+    border-radius: 20px; 
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    text-decoration: none; 
+}
+.glass-btn:hover { 
+    background: rgba(255, 255, 255, 0.1); 
+    border-color: rgba(255, 255, 255, 0.4); 
+    transform: translateY(-2px);
+}
