@@ -1,7 +1,7 @@
 :root {
     --pearl-blue: #224D9A;
     --pearl-green: #027A48;
-    --text-soft: rgba(255, 255, 255, 0.9);
+    --text-soft: rgba(255, 255, 255, 0.75); 
 }
 
 * { box-sizing: border-box; }
@@ -9,63 +9,48 @@
 body {
     margin: 0;
     min-height: 100vh;
-    background-image: url('Untitled design (1).png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; 
-    background-color: #111; /* Fallback */
+    background-color: #111;
     font-family: 'Inter', sans-serif;
     color: white;
     overflow: hidden;
 }
 
-/* --- NEW: Subtle Blue/Green Animated Graphics --- */
-.bg-graphics {
+/* --- INFINITE RIGHT-TO-LEFT SCROLLING BACKGROUND --- */
+.collage-scroller {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    top: 0; 
+    left: 0; 
+    height: 100vh; 
+    display: flex; 
+    width: max-content; 
+    z-index: -2;
+    /* Hardware acceleration for smooth performance */
+    will-change: transform;
+    animation: scrollRightToLeft 90s linear infinite; 
+}
+
+.collage-scroller img {
+    height: 100vh;
+    width: auto; /* Maintains perfect aspect ratio, no stretching */
+    object-fit: cover;
+}
+
+@keyframes scrollRightToLeft {
+    0% { transform: translate3d(0, 0, 0); }
+    /* Shifts the track by exactly ONE image width (100% divided by 4 images) to loop seamlessly */
+    100% { transform: translate3d(calc(-100% / 4), 0, 0); } 
+}
+
+/* Dark Tint Overlay to ensure the glass boxes and text are readable */
+.collage-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.55); 
     z-index: -1; 
-    pointer-events: none; 
-    overflow: hidden;
-    /* Blend mode makes the colors interact beautifully with your image */
-    mix-blend-mode: screen; 
 }
 
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px); /* Creates the soft glowing effect */
-    opacity: 0.6;
-    animation: floatOrb 18s infinite alternate ease-in-out;
-}
-
-.orb-blue {
-    width: 450px; height: 450px;
-    background: var(--pearl-blue);
-    top: -10%; left: 10%;
-}
-
-.orb-green {
-    width: 550px; height: 550px;
-    background: var(--pearl-green);
-    bottom: -15%; right: 5%;
-    animation-duration: 25s;
-    animation-direction: alternate-reverse;
-}
-
-.orb-light-blue {
-    width: 350px; height: 350px;
-    background: #3A6FCF;
-    top: 35%; left: 45%;
-    animation-duration: 22s;
-}
-
-@keyframes floatOrb {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(80px, 60px) scale(1.15); }
-}
-
-/* Main Layout Positioning */
+/* --- MAIN LAYOUT --- */
 .main-layout {
     position: relative;
     z-index: 10;
@@ -77,47 +62,49 @@ body {
     padding: 20px 40px;
 }
 
-/* Grid Layout */
 .panels-container {
     display: grid;
-    grid-template-columns: .9fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 60px; 
     width: 100%;
     max-width: 1250px;
     align-items: center;
 }
 
-/* === LEFT SECTION: Fading Information Box === */
-.left-panels {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.barely-visible-info-box {
-    background: rgba(255, 255, 255, 0.04); /* Barely visible */
-    backdrop-filter: blur(10px); 
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    border-radius: 18px;
-    padding: 40px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-    color: #fff;
-    width: 90%;
-    min-height: 280px; /* Keeps box size stable while text fades */
+/* --- GLASS BOX STYLING (Used on both Left & Right sides) --- */
+.glass-box {
+    background: rgba(255, 255, 255, 0.18); 
+    backdrop-filter: blur(15px); 
+    border-radius: 25px; 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    padding: 50px 40px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
+}
+
+/* --- LEFT SIDE: Fading Information Box --- */
+.left-panels {
+    display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.info-slider-box {
+    max-width: 550px;
+    min-height: 380px; /* Keeps the box size from collapsing when text changes */
+    text-align: center;
 }
 
 #info-title {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #fff;
     margin: 0 0 15px 0;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    color: #fff;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 #info-desc {
@@ -125,25 +112,12 @@ body {
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.95);
     margin: 0;
-    text-shadow: 0 1px 5px rgba(0,0,0,0.3);
 }
 
-/* === RIGHT SECTION: Login Form === */
-.glass-box.form-box {
-    background: rgba(255, 255, 255, 0.18); 
-    backdrop-filter: blur(15px); 
-    border-radius: 25px; 
-    border: 1px solid rgba(255, 255, 255, 0.3); 
-    padding: 50px 40px; 
-    min-height: 630px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+/* --- RIGHT SIDE: Login Form --- */
+.form-box {
     max-width: 550px; 
-    margin-left: 20px; 
-    margin-right: auto; 
-    width: 100%;
+    min-height: 630px; 
 }
 
 .form-logo-container {
@@ -168,7 +142,6 @@ body {
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15)); 
 }
 
-/* Input Fields & Buttons */
 .input-group { margin-bottom: 20px; } 
 .input-group label { display: block; font-size: 0.85rem; color: var(--text-soft); margin-bottom: 8px; font-weight: 500;}
 .input-group input {
@@ -181,32 +154,57 @@ body {
 .input-group input::placeholder { color: rgba(255,255,255,0.7); }
 .input-group input:focus { border-color: #fff; outline: none; background: rgba(255,255,255,0.25); }
 
-.login-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
-.forgot { color: var(--text-soft); font-size: 0.85rem; text-decoration: none; }
-.forgot:hover { text-decoration: underline; color: #fff;}
+/* Login Button Area */
+.login-footer { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 15px; 
+    margin-top: 30px; 
+}
 
 .submit-btn {
-    background: var(--pearl-green); color: white; border: none;
-    padding: 12px 35px; border-radius: 8px; font-weight: 600; font-size: 0.95rem;
-    cursor: pointer; box-shadow: 0 4px 15px rgba(2, 122, 72, 0.35);
+    width: 100%; 
+    background: var(--pearl-green); 
+    color: white; 
+    border: none;
+    padding: 15px 35px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    font-size: 1.1rem; 
+    cursor: pointer; 
+    box-shadow: 0 4px 15px rgba(2, 122, 72, 0.35);
     transition: transform 0.2s, background 0.2s;
 }
 .submit-btn:hover { transform: translateY(-2px); background: #038c53;}
 
-.bottom-nav { margin-top: 35px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.forgot { color: var(--text-soft); font-size: 0.9rem; text-decoration: none; }
+.forgot:hover { text-decoration: underline; color: #fff;}
+
+/* Helpdesk Buttons */
+.bottom-nav { 
+    margin-top: auto; 
+    padding-top: 40px; 
+    width: 100%; 
+    display: flex; 
+    gap: 20px; 
+    justify-content: space-between; 
+}
 .glass-btn {
     background: rgba(255, 255, 255, 0.15); 
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     color: white; 
-    padding: 8px 18px; 
-    border-radius: 20px; 
-    font-size: 0.8rem;
+    padding: 12px 20px; 
+    border-radius: 25px; 
+    font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer; 
     transition: all 0.3s ease;
     text-decoration: none; 
+    text-align: center;
+    flex: 1;
 }
 .glass-btn:hover { 
     background: rgba(255, 255, 255, 0.3); 
