@@ -9,26 +9,61 @@
 body {
     margin: 0;
     min-height: 100vh;
-    /* --- REMOVED PREVIOUS GRADIENT --- */
-    /* background: linear-gradient(135deg, #3A6FCF 0%, var(--pearl-blue) 40%, var(--pearl-green) 80%, #0BA865 100%); */
-
-    /* --- ADDED NEW BACKGROUND IMAGE --- */
     background-image: url('Untitled design (1).png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Optional: keeps background fixed on scroll */
-
+    background-attachment: fixed; 
+    background-color: #111; /* Fallback */
     font-family: 'Inter', sans-serif;
     color: white;
     overflow: hidden;
 }
 
-/* Woven Fabric Texture - REMOVED CSS for unused element */
-/* .fabric-bg { ... } */
+/* --- NEW: Subtle Blue/Green Animated Graphics --- */
+.bg-graphics {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -1; 
+    pointer-events: none; 
+    overflow: hidden;
+    /* Blend mode makes the colors interact beautifully with your image */
+    mix-blend-mode: screen; 
+}
 
-/* Flowing Waves Animation - REMOVED CSS for unused element */
-/* .wave-container { ... } .waves { ... } .parallax > use { ... } ... */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px); /* Creates the soft glowing effect */
+    opacity: 0.6;
+    animation: floatOrb 18s infinite alternate ease-in-out;
+}
+
+.orb-blue {
+    width: 450px; height: 450px;
+    background: var(--pearl-blue);
+    top: -10%; left: 10%;
+}
+
+.orb-green {
+    width: 550px; height: 550px;
+    background: var(--pearl-green);
+    bottom: -15%; right: 5%;
+    animation-duration: 25s;
+    animation-direction: alternate-reverse;
+}
+
+.orb-light-blue {
+    width: 350px; height: 350px;
+    background: #3A6FCF;
+    top: 35%; left: 45%;
+    animation-duration: 22s;
+}
+
+@keyframes floatOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(80px, 60px) scale(1.15); }
+}
 
 /* Main Layout Positioning */
 .main-layout {
@@ -52,11 +87,51 @@ body {
     align-items: center;
 }
 
-/* Glassmorphism Panels */
-.glass-box {
-    /* Slightly increased opacity for better readability on image background */
+/* === LEFT SECTION: Fading Information Box === */
+.left-panels {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.barely-visible-info-box {
+    background: rgba(255, 255, 255, 0.04); /* Barely visible */
+    backdrop-filter: blur(10px); 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 18px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+    color: #fff;
+    width: 90%;
+    min-height: 280px; /* Keeps box size stable while text fades */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#info-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 15px 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+#info-desc {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.3);
+}
+
+/* === RIGHT SECTION: Login Form === */
+.glass-box.form-box {
     background: rgba(255, 255, 255, 0.18); 
-    backdrop-filter: blur(15px); /* Stronger blur for image depth */
+    backdrop-filter: blur(15px); 
     border-radius: 25px; 
     border: 1px solid rgba(255, 255, 255, 0.3); 
     padding: 50px 40px; 
@@ -65,37 +140,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-/* Left Informational Panels */
-.left-panels {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; 
-    width: 100%;
-}
-
-.info-card.glass-box {
-    min-height: unset; 
-    padding: 30px; 
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.15); /* Slightly lighter for left side */
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-}
-
-.info-card:hover { transform: translateY(-5px); }
-
-.info-card h3 { margin: 0 0 12px 0; font-size: 1.25rem; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.info-card p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-soft); }
-
-/* Card specific styling (using pseudo-elements for icon indicators) */
-.announcements h3 { color: #fff; }
-.birthday h3 { color: #fff; }
-.achievement h3 { color: #fff; }
-
-/* Right Login Form */
-.form-box {
     max-width: 550px; 
     margin-left: 20px; 
     margin-right: auto; 
@@ -124,6 +168,7 @@ body {
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15)); 
 }
 
+/* Input Fields & Buttons */
 .input-group { margin-bottom: 20px; } 
 .input-group label { display: block; font-size: 0.85rem; color: var(--text-soft); margin-bottom: 8px; font-weight: 500;}
 .input-group input {
